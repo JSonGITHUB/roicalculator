@@ -2,10 +2,8 @@ import { useState } from 'react';
 import debounce from './components/utils/Debouncer';
 import ROICalculator from './components/eye/ROICalculator';
 import './assets/css/App.css';
-
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
-import history from './components/utils/history';
+//import history from './components/utils/history';
 
 const App = () => {
 
@@ -37,7 +35,7 @@ const App = () => {
     return (
         <div className='containerBox'>
             
-            <Router basename={base} history={history}>
+            <Router basename={base} /*history={history}*/>
 
                 <div className='App'>
                     <div className='fadeIn'>

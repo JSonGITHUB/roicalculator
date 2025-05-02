@@ -13,7 +13,7 @@ const ROICalculator = () => {
     const [scrubPct, setScrubPct] = useState(2);
 
     const pricePerScreened = 25;
-    const [pricePerTreatment, setPricePerTreatment] = useState(400);
+    const pricePerTreatment = 400;
     const pricePerUltra = 53;
     const pricePerCompress = 20;
     const pricePerDuo = 50;
