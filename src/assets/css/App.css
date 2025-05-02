@@ -2,14 +2,7 @@
   text-align: center;
 }
 
-.waveBackground {
-  text-align: center;
-  background-image: url('../images/JS17_Large_cresting_wave_hyperrealistic_ultra_detailed_hd_Cinem_834c51dd-f856-4596-8e59-3cbbf48bce0d.png');
-  background-repeat: no-repeat;
-  /*background-attachment: fixed;*/
-  background-position: center;
-  background-size: auto 100%;
-}
+
 
 .animated-background {
   animation: animateBackground 5s ease-in-out infinite alternate; /* Change the duration (6s) and timing function (linear) as needed */
@@ -26,14 +19,6 @@
   position: relative;
 }
 
-.demo-bg {
-  opacity: 0.4;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  background-image: url('../images/JS17_Large_cresting_wave_hyperrealistic_ultra_detailed_hd_Cinem_834c51dd-f856-4596-8e59-3cbbf48bce0d.png');
-}
 
 .demo-content {
   position: relative;

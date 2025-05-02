@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import debounce from './components/utils/Debouncer';
 import ROICalculator from './components/eye/ROICalculator';
+import './assets/css/App.css';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -14,7 +15,6 @@ const App = () => {
     });
 
     const base = 'roicalculator/';
-    const company = 'ROI';
 
     let path = window.location.pathname;
     

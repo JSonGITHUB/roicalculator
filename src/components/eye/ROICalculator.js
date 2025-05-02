@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import initializeData from '../utils/InitializeData';
-import Slider from './Slider';
-import getKey from '../utils/KeyGenerator';
 // #e3964a, #76a947
 const ROICalculator = () => {
 
@@ -21,16 +19,9 @@ const ROICalculator = () => {
     const pricePerDuo = 50;
     const pricePerScrub = 10;
     const maxPatientsPerWeek = 100;
-    const darkToggle = () => setMode((mode === 'lite') ? 'dark' : 'lite');
     const background = () => (mode === 'lite') ? 'bg-white' : null;
     const headerBackground = () => (mode === 'lite') ? 'bg-black' : null;
-    const containerBackground = () => (mode === 'lite') ? 'bg-tinted color-lite' : null;
     const containedHeaderBackground = () => (mode === 'lite') ? 'bg-tintedMedium' : null;
-    const toggleBackground = () => (mode === 'lite') ? 'bg-dark color-yellow' : null;
-    const color = () => (mode === 'lite') ? 'color-yellow' : 'color-yellow';
-    const modeIcon = () => (mode === 'lite') ? '🌙' : '☀️';
-    const toggleTitle = () => (mode === 'lite') ? 'dark mode' : 'lite mode';
-
     const calculateProfit = () => {
         const screenedProfit = screenedPct * pricePerScreened;
         const treatmentProfit = convertedPct * pricePerTreatment;
@@ -38,7 +29,6 @@ const ROICalculator = () => {
         const compressProfit = compressPct * pricePerCompress;
         const duoProfit = duoPct * pricePerDuo;
         const scrubProfit = scrubPct * pricePerScrub;
-
         const weeklyProfit = screenedProfit + treatmentProfit + ultraProfit + compressProfit + duoProfit + scrubProfit;
         const monthlyProfit = weeklyProfit * 4;
 
@@ -55,7 +45,6 @@ const ROICalculator = () => {
     };
 
     const profit = calculateProfit();
-
     const EYE_EXAM_REVENUE = 105;
     const totalAnnualProfit = profit.monthlyProfit * 12;
     const eyeExamsRequired = Math.ceil(totalAnnualProfit / EYE_EXAM_REVENUE);
@@ -78,7 +67,7 @@ const ROICalculator = () => {
     const MONTHLY_CREDIT_PERCENT = 0.25;
     const MONTHLY_CREDIT = MONTHLY_DE_PRODUCT_PURCHASES * MONTHLY_CREDIT_PERCENT;
     const NET_LEASE_PAYMENT = MGRX_LEASE_PAYMENT - MONTHLY_CREDIT;
-    const MONTHLY_PRODUCT_PROFITS = (profit.ultraProfit + profit.compressProfit + profit.duoProfit + profit.scrubProfit) * 4;
+    //const MONTHLY_PRODUCT_PROFITS = (profit.ultraProfit + profit.compressProfit + profit.duoProfit + profit.scrubProfit) * 4;
     const ADJUSTED_NET_LEASE_PAYMENT = MONTHLY_CREDIT - MGRX_LEASE_PAYMENT;
     const MONTHLY_PROFIT = profit.weeklyProfit * 4;
     const FIRST_YEAR_PROFIT = MONTHLY_PROFIT * 12;
