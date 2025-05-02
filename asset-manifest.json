@@ -5,11 +5,9 @@
     "main.js.map": "/roicalculator/static/js/main.56314f4f.chunk.js.map",
     "runtime-main.js": "/roicalculator/static/js/runtime-main.96dd51c1.js",
     "runtime-main.js.map": "/roicalculator/static/js/runtime-main.96dd51c1.js.map",
-    "static/css/2.aa7c6958.chunk.css": "/roicalculator/static/css/2.aa7c6958.chunk.css",
     "static/js/2.bad303b8.chunk.js": "/roicalculator/static/js/2.bad303b8.chunk.js",
     "static/js/2.bad303b8.chunk.js.map": "/roicalculator/static/js/2.bad303b8.chunk.js.map",
     "index.html": "/roicalculator/index.html",
-    "static/css/2.aa7c6958.chunk.css.map": "/roicalculator/static/css/2.aa7c6958.chunk.css.map",
     "static/css/main.a2093309.chunk.css.map": "/roicalculator/static/css/main.a2093309.chunk.css.map",
     "static/js/2.bad303b8.chunk.js.LICENSE.txt": "/roicalculator/static/js/2.bad303b8.chunk.js.LICENSE.txt",
     "static/media/1.5ed91faa.MP4": "/roicalculator/static/media/1.5ed91faa.MP4",
@@ -44,7 +42,6 @@
   },
   "entrypoints": [
     "static/js/runtime-main.96dd51c1.js",
-    "static/css/2.aa7c6958.chunk.css",
     "static/js/2.bad303b8.chunk.js",
     "static/css/main.a2093309.chunk.css",
     "static/js/main.56314f4f.chunk.js"
