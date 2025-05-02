@@ -43,7 +43,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-time-picker": "^7.0.0",
-    "roicalculator": "^13.0.4",
+    "reactor": "^13.0.4",
     "recharts": "^2.12.7",
     "redux": "^4.0.5",
     "redux-form": "^8.3.7",
