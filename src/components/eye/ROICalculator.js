@@ -694,7 +694,6 @@ const ROICalculator = () => {
                         <div onClick={generatePrintableReport} className='containerDetail brdr-ROIOrange mb-1 mt-10 button bg-roiOrange color-white p-20'>
                             Print Report
                         </div>
-                        <div className={`ht-200`}></div>
                         {/*
                     <div className='containerDetail p-10 brdr-ROIGreen mb-1 mt-10'>
                         <label className='m-5 color-roiGreen contentLeft' style={{ display: 'block', marginBottom: '0.5rem' }}>Weekly Dry Eye Patients: {patientsPerWeek}</label>
