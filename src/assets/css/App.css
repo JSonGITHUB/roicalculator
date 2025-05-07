@@ -986,6 +986,9 @@ select {
 .width-auto {
   width: auto;
 }
+.width-100 {
+  width: 100px;
+}
 .width-150 {
   width: 150px;
 }

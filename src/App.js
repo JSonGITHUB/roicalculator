@@ -57,6 +57,12 @@ const App = () => {
                                     <ROICalculator />
                                 )}
                             />
+                            <Route
+                                path='/MGrxLease'
+                                render={(props) => (
+                                    <ROICalculator />
+                                )}
+                            />
                         </Switch>
                     </div>
                 </div>
