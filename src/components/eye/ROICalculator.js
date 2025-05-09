@@ -486,7 +486,7 @@ return (
                                                     <div className='copyright contentRight mr-5'>input patient charge</div>
                                                 </div>
                                             </div>
-                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i pr-10'>
+                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                                 National average is $400 per treatment.
                                             </div>
                                         </div>
