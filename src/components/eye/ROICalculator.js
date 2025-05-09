@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import initializeData from '../utils/InitializeData';
+import SquarespaceFormIframe from './SquarespaceFormIframe';
 // #e3964a, #76a947
 const ROICalculator = () => {
 
@@ -11,6 +12,7 @@ const ROICalculator = () => {
     const [compressPct, setCompressPct] = useState(2);
     const [duoPct, setDuoPct] = useState(1);
     const [scrubPct, setScrubPct] = useState(2);
+    const [showForm, setShowForm] = useState(false);
     /////////////////
     const [isPromptOpen, setIsPromptOpen] = useState(false);
     const [userInput, setUserInput] = useState('');
@@ -99,12 +101,14 @@ const ROICalculator = () => {
     const FIRST_YEAR_NET_PROFIT = FIRST_YEAR_PROFIT + NET_LEASE_PAYMENT * 12;
     const SECOND_YEAR_NET_PROFIT = SECOND_YEAR_PROFIT + NET_LEASE_PAYMENT * 12;
     const THIRD_YEAR_NET_PROFIT = THIRD_YEAR_PROFIT + NET_LEASE_PAYMENT * 12;
+    const netProfit = ((profit.treatmentProfit.toFixed(2) * 4) * 12).toFixed(2);
+    console.log(`netProfit: ${netProfit}`);
 
     const [MGRX_SYSTEM_COST, setMGRX_SYSTEM_COST] = useState(15995);
     const MEIBOVUE_COST = 2900;
-    const SYSTEM_FIRST_YEAR_PROFIT = (MONTHLY_PROFIT * 12) + ((MGRX_SYSTEM_COST + MEIBOVUE_COST) * -1);
-    const SYSTEM_SECOND_YEAR_PROFIT = totalAnnualProfit * 1.15; // 15% increase
-    const SYSTEM_THIRD_YEAR_PROFIT = SYSTEM_SECOND_YEAR_PROFIT * 1.15; // 15% increase
+    const SYSTEM_FIRST_YEAR_PROFIT = Number(Number(netProfit) + (Number(MGRX_SYSTEM_COST) * -1));
+    const SYSTEM_SECOND_YEAR_PROFIT = netProfit; // 15% increase
+    const SYSTEM_THIRD_YEAR_PROFIT = netProfit; // 15% increase
     const ROI_MONTHS = (((MGRX_SYSTEM_COST + MEIBOVUE_COST)) / ((profit.screenedProfit + profit.treatmentProfit) * 4)).toFixed(2);
 
     const annualTreatmentProfit = () => (((patientsPerWeek * pricePerTreatment) * 4) * 12);
@@ -248,7 +252,7 @@ const ROICalculator = () => {
                                         <td className='pt-10 pb-10'>${formatCurrency(profit.treatmentProfit.toFixed(2))}</td>
                                         <td className='pt-10 pb-10'>${formatCurrency(profit.treatmentProfit.toFixed(2) * 4)}</td>
                                         <td className='pt-10 pb-10'>${formatCurrency(Number((profit.treatmentProfit.toFixed(2) * 4) * 12).toFixed(2))}</td>
-                                        <td className='pt-10 pb-10'>$400 per Treatment</td>
+                                        <td className='pt-10 pb-10'>National average is $400 per treatment.</td>
                                     </tr>
                                     <tr>
                                         <td className='pt-10 pb-10'>Ultra Dry Eye</td>
@@ -309,14 +313,11 @@ const ROICalculator = () => {
                                                         <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_DE_PRODUCT_PURCHASES * 12)}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td className='pt-10 pb-10'>Monthly Credit</td>
+                                                        <td className='pt-10 pb-10'>Monthly Credit*</td>
                                                         <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT)}</td>
                                                         <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT * 12)}</td>
                                                         <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT * 12)}</td>
                                                         <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT * 12)}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan='5'>25% credit earned for DE Product Purchased previous month</td>
                                                     </tr>
                                                     <tr>
                                                         <td className='pt-10 pb-10'>Net Lease Payment</td>
@@ -341,13 +342,21 @@ const ROICalculator = () => {
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <div className='p-10 size15 i'>Input from worksheet, 15% increase annually yr. 2-3</div>
+                                            <div className='p-10 size15 i'>
+                                                Assumptions:<br/>
+                                                *25% credit for DE Product Purchased the previous month, applied against the next months lease payment.<br/>
+                                                **15% increase in profitability annually
+                                            </div>
                                         </div>`
+    const getForm = () => {
+        return <SquarespaceFormIframe />
+    }
 
     const generatePrintableReport = () => {
     //const email = prompt('email:', 'account@email.com');
     //const clinic = prompt('clinic name:', 'Example Eye');
     //setIsPromptOpen(true);
+    setShowForm(true);
     const reportWindow = window.open('', '_blank');
     const reportContent = `
             <html>
@@ -412,7 +421,13 @@ return (
                 ? null
                 : <div>
                     <div className={`containerDetail brdr-ROIOrange mb-1 p-20 color-roiOrange contentLeft size 25 bold ${headerBackground()}`}>
-                        Dry Eye Profitability Calculator
+                        {   
+                            (isMGrxROI)
+                                ? 'MGrx Profitability Calculator'
+                                : (isMGrxLease)
+                                    ? 'MGrx Lease and Rebate Program'
+                                    : 'Dry Eye Profitability Calculator'
+                        }
                     </div>
                     {
                         (!isROICalculator && !isMGrxLease && !isMGrxROI)
@@ -445,93 +460,41 @@ return (
                         (!isROICalculator && !isMGrxLease && !isMGrxROI)
                             ? null
                             : <div className='containerDetail brdr-ROIGreen mb-1 mt-10'>
-                                {
-                                    (isROICalculator || isMGrxLease || isMGrxROI)
-                                        ? null
-                                        : <div>
-                                            <div className='flexContainer containerBox pb-15'>
-                                                <div className='color-roiGreen contentLeft'>
-                                                    Meibovue Screening Profit:
-                                                </div>
-                                                <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
-                                                    Assumptions
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className='flexContainer containerBox'>
-                                                    <label className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                                        Screened for MGD (Meibovue): <span className='color-roiOrange size25 bold'>{screenedPct}</span> X
-                                                        <input
-                                                            type='text'
-                                                            value={`$${Number(pricePerScreened).toLocaleString('en-US')}`}
-                                                            onChange={(e) => {
-                                                                const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
-                                                                setPricePerScreened(numericValue);
-                                                            }}
-                                                            className='containerDetail size20 bold contentLeft mt-10 bg-white color-dark ml-5 width-100'
-                                                        />
-                                                    </label>
-                                                    <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
-                                                        $25 per Screening
-                                                    </div>
-                                                </div>
-                                                <div className='flexContainer'>
-                                                    <div className='flexColumn color-roiGreen p-5'>
-                                                        0
-                                                    </div>
-                                                    <div className='flex2Column color-roiGreen'>
-                                                        <input
-                                                            type='range'
-                                                            min='0'
-                                                            max={patientsPerWeek}
-                                                            value={screenedPct}
-                                                            onChange={(e) => setScreenedPct(Number(e.target.value))}
-                                                            className='width-100-percent'
-                                                        />
-                                                    </div>
-                                                    <div className='flexColumn color-roiGreen p-5'>
-                                                        {patientsPerWeek}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='containerBox contentLeft flexContainer bg-lite'>
-                                                <div className='columnCenterAlign flex3Column size15'>
-                                                    Weekly:<br /> {formatCurrency(profit.screenedProfit.toFixed(2))}
-                                                </div>
-                                                <div className='columnCenterAlign flex3Column size15'>
-                                                    Monthly:<br /> {formatCurrency(profit.screenedProfit.toFixed(2) * 4)}
-                                                </div>
-                                                <div className='columnCenterAlign flex3Column size15'>
-                                                    Yearly:<br /> {formatCurrency(Number((profit.screenedProfit.toFixed(2) * 4) * 12).toFixed(2))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                }
                                 <div>
                                     <div className='flexContainer containerBox pb-15'>
                                         <div className='color-roiGreen contentLeft'>
-                                            MGrx Treatment Charge:
+                                            MGrx Treatment Profit:
                                         </div>
-                                        <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
+                                        <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             Assumptions
                                         </div>
                                     </div>
                                     <div>
                                         <div className='flexContainer containerBox'>
-                                            <label className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                                Patient Purchasing MGrx Treatment: <span className='color-roiOrange size25 bold'>{convertedPct}</span> X  
-                                                <input
-                                                    type='text'
-                                                    value={`$${Number(pricePerTreatment).toLocaleString('en-US')}`}
-                                                    onChange={(e) => {
-                                                        const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
-                                                        setPricePerTreatment(numericValue);
-                                                    }}
-                                                    className='containerDetail size20 bold contentLeft mt-10 bg-white color-dark ml-5 width-100'
-                                                />
-                                            </label>
-                                            <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
-                                                $400 per Treatment
+                                            <div className='flexColumn m-5 color-roiGreen contentLeft size15'>
+                                                <div className=''>
+                                                    <label>MGrx Treatment Charge:</label>
+                                                    <input
+                                                        type='text'
+                                                        value={`$${Number(pricePerTreatment).toLocaleString('en-US')}`}
+                                                        onChange={(e) => {
+                                                            const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
+                                                            setPricePerTreatment(numericValue);
+                                                        }}
+                                                        className='containerDetail size25 bold contentLeft mt-10 color-dark ml-5 width-100 bg-roiOrange'
+                                                    />
+                                                    <div className='copyright contentRight mr-5'>input patient charge</div>
+                                                </div>
+                                            </div>
+                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i pr-10'>
+                                                National average is $400 per treatment.
+                                            </div>
+                                        </div>
+                                        <div className='flexContainer containerBox'>
+                                            <div className='flexColumn m-5 color-roiGreen contentLeft size15'>
+                                                Patients Purchasing an MGrx Treatment weekly: <span className='color-roiOrange size25 bold'>{convertedPct}</span>
+                                            </div>
+                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i pr-10'>
                                             </div>
                                         </div>
                                         <div className='flexContainer'>
@@ -577,26 +540,17 @@ return (
                                             <div className='flex2Column color-roiGreen contentLeft'>
                                                 Ultra Dry Eye Profit:
                                             </div>
-                                            <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
+                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                                 Assumptions
                                             </div>
                                         </div>
                                         <div>
                                             <div className='flexContainer containerBox'>
-                                                <label className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                                    Buying Ultra Dry Eye Supplement: <span className='color-roiOrange size25 bold'>{ultraPct}</span> X
-                                                    <input
-                                                        type='text'
-                                                        value={`$${Number(pricePerUltra).toLocaleString('en-US')}`}
-                                                        onChange={(e) => {
-                                                            const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
-                                                            setPricePerUltra(numericValue);
-                                                        }}
-                                                        className='containerDetail size20 bold contentLeft mt-10 bg-white color-dark ml-5 width-100'
-                                                    />
-                                                </label>
-                                                <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
-                                                    $53 profit per bottle
+                                                <div className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
+                                                    Buying Ultra Dry Eye Supplement: <span className='color-roiOrange size25 bold'>{ultraPct}</span> X {`$${Number(pricePerUltra).toLocaleString('en-US')}`}
+                                                </div>
+                                                <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
+                                                    National average is $53/bottle.
                                                 </div>
                                             </div>
                                         </div>
@@ -634,28 +588,19 @@ return (
                                 <div className='containerDetail brdr-ROIGreen mb-1 mt-10'>
                                     <div className='flexContainer containerBox pb-15'>
                                         <div className='color-roiGreen contentLeft'>
-                                            Microwave Compress Profit:
+                                            Dry Eye Compress (microwaveable) Profit:
                                         </div>
-                                        <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
+                                        <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             Assumptions
                                         </div>
                                     </div>
                                     <div>
                                         <div className='flexContainer containerBox'>
-                                            <label className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                                Buying Microwave Compress: <span className='color-roiOrange size25 bold'>{compressPct}</span> X
-                                                <input
-                                                    type='text'
-                                                    value={`$${Number(pricePerCompress).toLocaleString('en-US')}`}
-                                                    onChange={(e) => {
-                                                        const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
-                                                        setPricePerCompress(numericValue);
-                                                    }}
-                                                    className='containerDetail size20 bold contentLeft mt-10 bg-white color-dark ml-5 width-100'
-                                                />
-                                            </label>
-                                            <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
-                                                $20 per Microwave Compress
+                                            <div className='flexColumn m-5 color-roiGreen contentLeft size15'>
+                                                Buying Microwave Compress: <span className='color-roiOrange size25 bold'>{compressPct}</span> X {`$${Number(pricePerCompress).toLocaleString('en-US')}`}
+                                            </div>
+                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
+                                                National Average is $20 per compress.
                                             </div>
                                         </div>
                                         <div className='flexContainer'>
@@ -694,26 +639,17 @@ return (
                                         <div className='color-roiGreen contentLeft'>
                                             Duo USB Compress Profit:
                                         </div>
-                                        <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
+                                        <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             Assumptions
                                         </div>
                                     </div>
                                     <div>
                                         <div className='flexContainer containerBox'>
-                                            <label className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                                Buying Duo USB Compress: <span className='color-roiOrange size25 bold'>{duoPct}</span> X
-                                                <input
-                                                    type='text'
-                                                    value={`$${Number(pricePerDuo).toLocaleString('en-US')}`}
-                                                    onChange={(e) => {
-                                                        const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
-                                                        setPricePerDuo(numericValue);
-                                                    }}
-                                                    className='containerDetail size20 bold contentLeft mt-10 bg-white color-dark ml-5 width-100'
-                                                />
-                                            </label>
-                                            <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
-                                                $50 per Duo Compress
+                                            <div className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
+                                                Buying Duo USB Compress: <span className='color-roiOrange size25 bold'>{duoPct}</span> X {`$${Number(pricePerDuo).toLocaleString('en-US')}`}
+                                            </div>
+                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
+                                                National average is $50 per  Duo Compress.
                                             </div>
                                         </div>
                                         <div className='flexContainer'>
@@ -752,26 +688,17 @@ return (
                                         <div className='color-roiGreen contentLeft'>
                                             Lid Scrub Profit:
                                         </div>
-                                        <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
+                                        <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             Assumptions
                                         </div>
                                     </div>
                                     <div>
                                         <div className='containerBox flexContainer'>
-                                            <label className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                                Buying Lid Scrub: <span className='color-roiOrange size25 bold'>{scrubPct}</span> X
-                                                <input
-                                                    type='text'
-                                                    value={`$${Number(pricePerScrub).toLocaleString('en-US')}`}
-                                                    onChange={(e) => {
-                                                        const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
-                                                        setPricePerScrub(numericValue);
-                                                    }}
-                                                    className='containerDetail size20 bold contentLeft mt-10 bg-white color-dark ml-5 width-100'
-                                                />
-                                            </label>
-                                            <div className='flex2Column columnRightAlign mr-10 color-graphite size15 i'>
-                                                $10 per Lid Scrub
+                                            <div className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
+                                                Buying Lid Scrub: <span className='color-roiOrange size25 bold'>{scrubPct}</span> X {`$${Number(pricePerScrub).toLocaleString('en-US')}`}
+                                            </div>
+                                            <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
+                                                National average is $10 per Lid Scrub.
                                             </div>
                                         </div>
                                         <div className='flexContainer'>
@@ -822,12 +749,12 @@ return (
                                                 Yearly:<br /> {formatCurrency(Number((profit.monthlyProfit.toFixed(2)) * 12).toFixed(2))}
                                             </div>
                                             <div className='m-1 contentLeft flex5Column size15 color-roiOrange'>
-                                                # of eye exams<br/>
-                                                {formatCurrency(Number(eyeExamsRequired).toFixed(2)).toString().replace('$', '')} per year
+                                                Equivalent Number of Eye Exams<br/>
+                                                {formatCurrency(Number(eyeExamsRequired).toFixed(2)).toString().replace('$', '')}
                                             </div>
                                             <div className='m-1 contentLeft flex5Column size15 color-roiOrange'>
                                                 Assumptions<br/>
-                                                $105 average eye exam
+                                                National average is $105 per eye exam.
                                             </div>
                                         </div>
                                     </div>
@@ -864,13 +791,12 @@ return (
                                             <div className='flex5Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_DE_PRODUCT_PURCHASES * 12)}</div>
                                         </div>
                                         <div className='flexContainer'>
-                                            <div className='flex5Column pb-10 pt-10 brdr-dark'>Monthly Credit</div>
+                                            <div className='flex5Column pb-10 pt-10 brdr-dark'>Monthly Credit*</div>
                                             <div className='flex5Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT)}</div>
                                             <div className='flex5Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT * 12)}</div>
                                             <div className='flex5Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT * 12)}</div>
                                             <div className='flex5Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT * 12)}</div>
                                         </div>
-                                        <div className='flexColumn pb-10 pt-10 brdr-dark'>25% credit earned for DE Product Purchased previous month</div>
                                         <div className='flexContainer bg-lite'>
                                             <div className='flex5Column pb-10 pt-10 brdr-dark'>Net Lease Payment</div>
                                             <div className='flex5Column pb-10 pt-10 brdr-dark'>{formatCurrency(ADJUSTED_NET_LEASE_PAYMENT)}</div>
@@ -894,7 +820,11 @@ return (
                                         </div>
                                     </div>
                                 </div>
-                                <div className='pb-10 pt-10 size15 i'>Input from worksheet, 15% increase annually yr. 2-3</div>
+                                <div className='pl-20 pb-5 pt-10 copyright color-roiOrange i lh-10 contentLeft'>
+                                    Assumptions:<br/>
+                                    *25% credit for DE Product Purchased the previous month, applied against the next months lease payment.<br/>
+                                    **15% increase in profitability annually
+                                </div>
                             </div>
                             : null
                     }
@@ -914,7 +844,7 @@ return (
                                     </div>
                                     <div className='flexContainer'>
                                         <div className='flex2Column pb-10 pt-10 pl-10 contentLeft text-align-top brdr-dark'>
-                                            <div>MGrx System Purchase</div>
+                                            <div className='color-roiOrange bold size25'>MGrx System Purchase</div>
                                             <div>
                                                 <input
                                                     type='text'
@@ -947,76 +877,11 @@ return (
                     <div onClick={generatePrintableReport} className='containerDetail brdr-ROIOrange mb-1 mt-10 button bg-roiOrange color-white p-20'>
                         Print/Email Report
                     </div>
-                    {/*
-                <div className='containerDetail p-10 brdr-ROIGreen mb-1 mt-10'>
-                    <label className='m-5 color-roiGreen contentLeft' style={{ display: 'block', marginBottom: '0.5rem' }}>Weekly Dry Eye Patients: {patientsPerWeek}</label>
-                    <div className='flexContainer'>
-                        <div className='flexColumn color-roiGreen p-5'>
-                            0
-                        </div>
-                        <div className='flex2Column color-roiGreen'>
-                            <input
-                                type='range'
-                                min='0'
-                                max={maxPatientsPerWeek}
-                                value={patientsPerWeek}
-                                onChange={(e) => setPatientsPerWeek(Number(e.target.value))}
-                                className='width-100-percent'
-                            />
-                        </div>
-                        <div className='flexColumn color-roiGreen p-5'>
-                            {maxPatientsPerWeek}
-                        </div>
-                    </div>
-                </div>
-                <div className='containerDetail p-10 brdr-ROIGreen mb-1 mt-10'>
-                    <label className='m-5 color-roiGreen contentLeft' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                        Charge per MGrx Treatment: ($400/treatment national average)
-                    </label>
-                    <input
-                        type='number'
-                        value={pricePerTreatment}
-                        onChange={(e) => setPricePerTreatment(Number(e.target.value))}
-                        className='containerBox width--10'
-                    />
-                </div>
-                <div className='containerDetail p-10 brdr-ROIGreen mb-1 mt-10'>
-                    <label className='m-5 color-roiGreen contentLeft' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                        Purchase Price of the MGrx: ($15,995 list price)
-                    </label>
-                    <input
-                        type='text'
-                        value={`$${Number(MGRX_SYSTEM_COST).toLocaleString('en-US')}`}
-                        onChange={(e) => {
-                            const numericValue = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10) || 0;
-                            setMGRX_SYSTEM_COST(numericValue);
-                        }}
-                        className='containerBox width--10'
-                    />
-                </div>
-                <div className='containerDetail brdr-ROIGreen mb-1 mt-10'>
-                    <div className='containerBox color-roiGreen contentLeft'>
-                        MGrx Treatment Profit:
-                    </div>
-                    <div className='containerBox'>
-                        <label className='m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                            Converted to MGrx Treatment: {patientsPerWeek} X ${pricePerTreatment}
-                        </label>
-                    </div>
-                    <div className='containerBox contentLeft flexContainer bg-lite'>
-                        <div className='columnCenterAlign flex3Column size15'>
-                            Weekly:<br /> {formatCurrency(patientsPerWeek * pricePerTreatment)}
-                        </div>
-                        <div className='columnCenterAlign flex3Column size15'>
-                            Monthly:<br /> {formatCurrency((patientsPerWeek * pricePerTreatment) * 4)}
-                        </div>
-                        <div className='columnCenterAlign flex3Column size15'>
-                            Yearly:<br /> {formatCurrency(annualTreatmentProfit())}
-                        </div>
-                    </div>
-                </div>
-
-                */}
+                    {
+                        (showForm)
+                        ? getForm()
+                        : null
+                    }
                 </div>
         }
         <div>

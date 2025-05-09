@@ -1080,7 +1080,9 @@ select {
 .mr-5 {
   margin-right: 5px;
 }
-
+.mr-8 {
+  margin-right: 8px;
+}
 .mr-1 {
   margin-right: 1px;
 }
