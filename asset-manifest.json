@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/roicalculator/static/css/main.5381aa1a.chunk.css",
-    "main.js": "/roicalculator/static/js/main.d587a6a4.chunk.js",
-    "main.js.map": "/roicalculator/static/js/main.d587a6a4.chunk.js.map",
+    "main.js": "/roicalculator/static/js/main.5524e4eb.chunk.js",
+    "main.js.map": "/roicalculator/static/js/main.5524e4eb.chunk.js.map",
     "runtime-main.js": "/roicalculator/static/js/runtime-main.f2ddde14.js",
     "runtime-main.js.map": "/roicalculator/static/js/runtime-main.f2ddde14.js.map",
     "static/js/2.3667e69b.chunk.js": "/roicalculator/static/js/2.3667e69b.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.f2ddde14.js",
     "static/js/2.3667e69b.chunk.js",
     "static/css/main.5381aa1a.chunk.css",
-    "static/js/main.d587a6a4.chunk.js"
+    "static/js/main.5524e4eb.chunk.js"
   ]
 }
