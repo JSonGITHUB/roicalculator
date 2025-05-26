@@ -30,7 +30,9 @@ const ROICalculator = () => {
 
     const formatCurrency = (amount) => {
         //if (typeof (amount) !== Number) return 'Zero'
-        return `$${Math.round(amount).toLocaleString('en-US')}`;
+        const currency = Math.round(amount).toLocaleString('en-US');
+        if (currency.includes('-')) return `($${currency.replace('-', '')})`;
+        return `$${currency}`;
     };
 
     const calculateProfit = ({
