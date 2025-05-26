@@ -72,7 +72,7 @@ const ROICalculator = () => {
         const yearlyProductsTotal = weeklyProductsTotal * WEEKS_PER_YEAR;
         const yearlyTotal = (weeklyTreatmentTotal + weeklyProductsTotal) * WEEKS_PER_YEAR;
         const secondYearProductsTotal = yearlyProductsTotal * 1.15;
-        const secondYearTotal = (yearlyTreatmentTotal + secondYearProductsTotal) * 1.15;
+        const secondYearTotal = (yearlyTotal) * 1.15;
         const thirdYearProductsTotal = secondYearProductsTotal * 1.15;
         const thirdYearTotal = secondYearTotal * 1.15;
 
@@ -90,8 +90,8 @@ const ROICalculator = () => {
         const netProfit = (weeklyTreatmentTotal * WEEKS_PER_YEAR);
 
         const SYSTEM_FIRST_YEAR_PROFIT = formatCurrency((netProfit + (MGRX_SYSTEM_COST * -1)));
-        const SYSTEM_SECOND_YEAR_PROFIT = formatCurrency(netProfit); // 15% increase
-        const SYSTEM_THIRD_YEAR_PROFIT = formatCurrency(netProfit); // 15% increase
+        const SYSTEM_SECOND_YEAR_PROFIT = formatCurrency(netProfit*1.15); // 15% increase
+        const SYSTEM_THIRD_YEAR_PROFIT = formatCurrency((netProfit * 1.15)*1.15); // 15% increase
 
         const ROI_MONTHS = (
             MGRX_SYSTEM_COST /
@@ -1290,7 +1290,7 @@ const ROICalculator = () => {
                                         <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
                                             {eyeExamsRequired(profit.yearlyTotal)}
                                         </div>
-                                        <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
+                                                <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
                                             {eyeExamsRequired(profit.secondYearTotal)}
                                         </div>
                                         <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
