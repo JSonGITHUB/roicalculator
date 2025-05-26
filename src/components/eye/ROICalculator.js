@@ -226,7 +226,7 @@ const ROICalculator = () => {
     const MGRX_LEASE_PAYMENT = 600;
     const yearlyLease = formatCurrency(-MGRX_LEASE_PAYMENT * 12);
     const MONTHLY_CREDIT_PERCENT = 0.25;
-    const MONTHLY_CREDIT = profit.monthlyTotal * MONTHLY_CREDIT_PERCENT;
+    const MONTHLY_CREDIT = profit.monthlyProductsTotal * MONTHLY_CREDIT_PERCENT;
     const ADJUSTED_NET_LEASE_PAYMENT = MONTHLY_CREDIT - MGRX_LEASE_PAYMENT;
     const monthlyNetProfit = formatCurrency(profit.monthlyTotal + ADJUSTED_NET_LEASE_PAYMENT);
     const yearlyNetProfit = formatCurrency(profit.yearlyTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
@@ -1121,8 +1121,8 @@ const ROICalculator = () => {
                                     </div>
                                     <div className='flexContainer'>
                                         <div className='flex6Column pb-10 pt-10 brdr-dark'>Monthly Profit</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyProductProfit}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyProductProfit}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyProfit}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyProfit}</div>
                                         <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearProfit}</div>
                                         <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearProfit}</div>
                                         <div className='flex6Column size12 color-roiOrange pb-10 pt-10 brdr-dark contentLeft pl-5'>
