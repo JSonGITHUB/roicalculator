@@ -68,9 +68,9 @@ const ROICalculator = () => {
         const weeklyProductsTotal = ultraWeeklyTotal + compressWeeklyTotal + duoWeeklyTotal + scrubProfit;
         const weeklyTotal = weeklyTreatmentTotal + weeklyProductsTotal;
         const monthlyProductsTotal = (weeklyProductsTotal * WEEKS_PER_YEAR) / 12;
-        const monthlyTotal = ((weeklyTreatmentTotal + weeklyProductsTotal) * WEEKS_PER_YEAR) / 12;
+        const monthlyTotal = (weeklyTotal * WEEKS_PER_YEAR) / 12;
         const yearlyProductsTotal = weeklyProductsTotal * WEEKS_PER_YEAR;
-        const yearlyTotal = (weeklyTreatmentTotal + weeklyProductsTotal) * WEEKS_PER_YEAR;
+        const yearlyTotal = weeklyTotal * WEEKS_PER_YEAR;
         const secondYearProductsTotal = yearlyProductsTotal * 1.15;
         const secondYearTotal = (yearlyTotal) * 1.15;
         const thirdYearProductsTotal = secondYearProductsTotal * 1.15;
@@ -81,9 +81,9 @@ const ROICalculator = () => {
         const secondYearProductsProfit = formatCurrency(secondYearProductsTotal);
         const thirdYearProductsProfit = formatCurrency(thirdYearProductsTotal);
 
-        const weeklyProfit = formatCurrency(weeklyTreatmentTotal + weeklyProductsTotal);
-        const monthlyProfit = formatCurrency(monthlyTreatmentTotal + monthlyProductsTotal);
-        const yearlyProfit = formatCurrency(yearlyTreatmentTotal + yearlyProductsTotal);
+        const weeklyProfit = formatCurrency(weeklyTotal);
+        const monthlyProfit = formatCurrency(monthlyTotal);
+        const yearlyProfit = formatCurrency(yearlyTotal);
         const secondYearProfit = formatCurrency(secondYearTotal);
         const thirdYearProfit = formatCurrency(thirdYearTotal);
 
@@ -644,8 +644,8 @@ const ROICalculator = () => {
                                         </tr>
                                         <tr>
                                             <td className='pt-10 pb-10'>Monthly Profit</td>
-                                            <td className='pt-10 pb-10'>${profit.monthlyProductProfit}</td>
-                                            <td className='pt-10 pb-10'>${profit.yearlyProductProfit}</td>
+                                            <td className='pt-10 pb-10'>${profit.monthlyProfit}</td>
+                                            <td className='pt-10 pb-10'>${profit.yearlyProfit}</td>
                                             <td className='pt-10 pb-10'>${profit.secondYearProfit}</td>
                                             <td className='pt-10 pb-10'>${profit.thirdYearProfit}</td>
                                             <td className='pt-10 pb-10'>15% increase in profitability annually</td>
