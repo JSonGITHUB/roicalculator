@@ -1,20 +1,13 @@
 {
   "files": {
-    "main.css": "/roicalculator/static/css/main.5381aa1a.chunk.css",
-    "main.js": "/roicalculator/static/js/main.18b6dc39.chunk.js",
-    "main.js.map": "/roicalculator/static/js/main.18b6dc39.chunk.js.map",
-    "runtime-main.js": "/roicalculator/static/js/runtime-main.f2ddde14.js",
-    "runtime-main.js.map": "/roicalculator/static/js/runtime-main.f2ddde14.js.map",
-    "static/js/2.3667e69b.chunk.js": "/roicalculator/static/js/2.3667e69b.chunk.js",
-    "static/js/2.3667e69b.chunk.js.map": "/roicalculator/static/js/2.3667e69b.chunk.js.map",
+    "main.css": "/roicalculator/static/css/main.f035ab23.css",
+    "main.js": "/roicalculator/static/js/main.3c2a5298.js",
     "index.html": "/roicalculator/index.html",
-    "static/css/main.5381aa1a.chunk.css.map": "/roicalculator/static/css/main.5381aa1a.chunk.css.map",
-    "static/js/2.3667e69b.chunk.js.LICENSE.txt": "/roicalculator/static/js/2.3667e69b.chunk.js.LICENSE.txt"
+    "main.f035ab23.css.map": "/roicalculator/static/css/main.f035ab23.css.map",
+    "main.3c2a5298.js.map": "/roicalculator/static/js/main.3c2a5298.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.f2ddde14.js",
-    "static/js/2.3667e69b.chunk.js",
-    "static/css/main.5381aa1a.chunk.css",
-    "static/js/main.18b6dc39.chunk.js"
+    "static/css/main.f035ab23.css",
+    "static/js/main.3c2a5298.js"
   ]
 }
