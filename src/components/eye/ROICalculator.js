@@ -47,6 +47,7 @@ const ROICalculator = () => {
         scrubPct,
         pricePerScrub,
         WEEKS_PER_YEAR,
+        MGRX_SYSTEM_LEASE,
         MGRX_SYSTEM_COST
     }) => {
 
@@ -91,14 +92,35 @@ const ROICalculator = () => {
 
         const netProfit = (weeklyTreatmentTotal * WEEKS_PER_YEAR);
 
-        const SYSTEM_FIRST_YEAR_PROFIT = formatCurrency((netProfit + (MGRX_SYSTEM_COST * -1)));
-        const SYSTEM_SECOND_YEAR_PROFIT = formatCurrency(netProfit*1.15); // 15% increase
-        const SYSTEM_THIRD_YEAR_PROFIT = formatCurrency((netProfit * 1.15)*1.15); // 15% increase
+        const SYSTEM_FIRST_YEAR_TOTAL = netProfit + (MGRX_SYSTEM_COST * -1);
+        const SYSTEM_SECOND_YEAR_TOTAL = netProfit * 1.15; // 15% increase
+        const SYSTEM_THIRD_YEAR_TOTAL = (netProfit * 1.15) * 1.15; // 15% increase
+
+        const SYSTEM_FIRST_YEAR_PROFIT = formatCurrency(SYSTEM_FIRST_YEAR_TOTAL);
+        const SYSTEM_SECOND_YEAR_PROFIT = formatCurrency(SYSTEM_SECOND_YEAR_TOTAL); // 15% increase
+        const SYSTEM_THIRD_YEAR_PROFIT = formatCurrency(SYSTEM_THIRD_YEAR_TOTAL); // 15% increase
 
         const ROI_MONTHS = (
             MGRX_SYSTEM_COST /
             monthlyTreatmentTotal
         ).toFixed(2);
+
+        const MGRX_LEASE_PAYMENT = MGRX_SYSTEM_LEASE;
+        const yearlyLease = formatCurrency(-MGRX_LEASE_PAYMENT * 12);
+        const MONTHLY_CREDIT_PERCENT = 0.25;
+        const MONTHLY_CREDIT = monthlyProductsTotal * MONTHLY_CREDIT_PERCENT;
+        const ADJUSTED_NET_LEASE_PAYMENT = MONTHLY_CREDIT - MGRX_LEASE_PAYMENT;
+        
+        const weeklyNetTotal = weeklyTotal + (ADJUSTED_NET_LEASE_PAYMENT/4);
+        const monthlyNetTotal = monthlyTotal + ADJUSTED_NET_LEASE_PAYMENT;
+        const yearlyNetTotal = yearlyTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
+        const secondYearNetTotal = secondYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
+        const thirdYearNetTotal = thirdYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
+
+        const monthlyNetProfit = formatCurrency(monthlyNetTotal);
+        const yearlyNetProfit = formatCurrency(yearlyNetTotal);
+        const secondYearNetProfit = formatCurrency(secondYearNetTotal);
+        const thirdYearNetProfit = formatCurrency(thirdYearNetTotal);
 
         return {
             weeklyTreatmentProfit,
@@ -137,6 +159,22 @@ const ROICalculator = () => {
             SYSTEM_SECOND_YEAR_PROFIT,
             SYSTEM_THIRD_YEAR_PROFIT,
             ROI_MONTHS,
+            MGRX_LEASE_PAYMENT,
+            yearlyLease,
+            MONTHLY_CREDIT,
+            ADJUSTED_NET_LEASE_PAYMENT,
+            monthlyNetProfit,
+            yearlyNetProfit,
+            secondYearNetProfit,
+            thirdYearNetProfit,
+            weeklyNetTotal,
+            monthlyNetTotal,
+            yearlyNetTotal,
+            secondYearNetTotal,
+            thirdYearNetTotal,
+            SYSTEM_FIRST_YEAR_TOTAL,
+            SYSTEM_SECOND_YEAR_TOTAL,
+            SYSTEM_THIRD_YEAR_TOTAL
         };
     };
 
@@ -153,7 +191,8 @@ const ROICalculator = () => {
             scrubPct,
             pricePerScrub,
             WEEKS_PER_YEAR,
-            MGRX_SYSTEM_COST
+            MGRX_SYSTEM_COST,
+            MGRX_SYSTEM_LEASE
         })
     );
 
@@ -199,7 +238,8 @@ const ROICalculator = () => {
                 scrubPct,
                 pricePerScrub,
                 WEEKS_PER_YEAR,
-                MGRX_SYSTEM_COST
+                MGRX_SYSTEM_COST,
+                MGRX_SYSTEM_LEASE
             })
         );
     }, [
@@ -215,6 +255,7 @@ const ROICalculator = () => {
         pricePerScrub,
         WEEKS_PER_YEAR,
         MGRX_SYSTEM_COST,
+        MGRX_SYSTEM_LEASE,
         patientsPerWeek
     ]);
 
@@ -225,23 +266,13 @@ const ROICalculator = () => {
     console.log('Is current path /ROICalculator:', window.location.pathname);
     console.log('isMGrxLease:', isMGrxLease);
 
-    const MGRX_LEASE_PAYMENT = 600;
-    const yearlyLease = formatCurrency(-MGRX_LEASE_PAYMENT * 12);
-    const MONTHLY_CREDIT_PERCENT = 0.25;
-    const MONTHLY_CREDIT = profit.monthlyProductsTotal * MONTHLY_CREDIT_PERCENT;
-    const ADJUSTED_NET_LEASE_PAYMENT = MONTHLY_CREDIT - MGRX_LEASE_PAYMENT;
-    const monthlyNetProfit = formatCurrency(profit.monthlyTotal + ADJUSTED_NET_LEASE_PAYMENT);
-    const yearlyNetProfit = formatCurrency(profit.yearlyTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
-    const secondYearNetProfit = formatCurrency(profit.secondYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
-    const thirdYearNetProfit = formatCurrency(profit.thirdYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
-
     const EYE_EXAM_REVENUE = 105;
     const eyeExamsRequired = (total) => Math.ceil(total / EYE_EXAM_REVENUE);
     
-    const ultraPrint = (!isROICalculator) ? '' : `<li>Buying Ultra Dry Eye Supplement: ${ultraPct} X $${pricePerUltra}</li>`;
-    const compressPrint = (!isROICalculator) ? '' : `<li>Buying Dry Eye Compress (microwaveable): ${compressPct} X $${pricePerCompress}</li>`;
-    const duoPrint = (!isROICalculator) ? '' : `<li>Buying Duo USB Compress: ${duoPct} X $${pricePerDuo}</li>`;
-    const scrubPrint = (!isROICalculator) ? '' : `<li>Buying Lid Scrub: ${scrubPct} X $${pricePerScrub}</li>`;
+    const ultraPrint = (!isROICalculator) ? '' : `<li>Patients buying Ultra Dry Eye Supplement weekly: ${ultraPct} X $${pricePerUltra}</li>`;
+    const compressPrint = (!isROICalculator) ? '' : `<li>Patients buying Dry Eye Compress microwavable weekly: ${compressPct} X $${pricePerCompress}</li>`;
+    const duoPrint = (!isROICalculator) ? '' : `<li>Patients buying Duo USB Compress weekly: ${duoPct} X $${pricePerDuo}</li>`;
+    const scrubPrint = (!isROICalculator) ? '' : `<li>Patients buying Lid Scrub weekly: ${scrubPct} X $${pricePerScrub}</li>`;
     const sendEmail = (email, clinic, reportContent) => {
         const to = email;
         const subject = encodeURIComponent((isMGrxLease) ? 'MGrx Lease and Rebate Program' : (isMGrxROI) ? 'MGrx Profitability Calculator' : 'Dry Eye Profitability Report');
@@ -353,21 +384,21 @@ const ROICalculator = () => {
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? formatCurrency(-MGRX_LEASE_PAYMENT) 
+                                                    ? formatCurrency(-profit.MGRX_LEASE_PAYMENT) 
                                                     : formatCurrency(MGRX_SYSTEM_COST)
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? yearlyLease 
+                                                    ? profit.yearlyLease 
                                                     : ''
                                                 }
                                             </td>
-                                            <td className='pt-10 pb-10'>${(isLease) ? yearlyLease : ''}</td>
+                                            <td className='pt-10 pb-10'>${(isLease) ? profit.yearlyLease : ''}</td>
                                             ${
                                                 (isLease)
-                                                ? `<td className='pt-10 pb-10'>${(isLease) ? yearlyLease : ''}</td>`
+                                                ? `<td className='pt-10 pb-10'>${(isLease) ? profit.yearlyLease : ''}</td>`
                                                 : ``
                                             }
                                             <td className='pt-10 pb-10'></td>
@@ -404,7 +435,13 @@ const ROICalculator = () => {
                                                     : profit.SYSTEM_THIRD_YEAR_PROFIT
                                                 }
                                             </td>
-                                            <td className='pt-10 pb-10'></td>
+                                            <td className='pt-10 pb-10'>
+                                            ${
+                                                (isLease)
+                                                ? ''
+                                                : 'growth of 15% year over year'
+                                            }
+                                            </td>
                                         </tr>
                                         <tr>
                                             ${
@@ -415,28 +452,28 @@ const ROICalculator = () => {
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? monthlyNetProfit 
+                                                    ? profit.monthlyNetProfit 
                                                     : profit.ROI_MONTHS
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? yearlyNetProfit
+                                                    ? profit.yearlyNetProfit
                                                     : ''
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? secondYearNetProfit
+                                                    ? profit.secondYearNetProfit
                                                     : ''
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? thirdYearNetProfit
+                                                    ? profit.thirdYearNetProfit
                                                     : ''
                                                 }
                                             </td>
@@ -451,18 +488,31 @@ const ROICalculator = () => {
                                             ${
                                                 (isLease)
                                                 ? `<td className='pt-10 pb-10'>
-                                                    ${eyeExamsRequired(profit.monthlyTotal)}
+                                                    ${eyeExamsRequired(profit.monthlyNetTotal)}
                                                 </td>`
                                                 : ''
                                             }
+
                                             <td className='pt-10 pb-10'>
-                                                ${eyeExamsRequired(profit.yearlyTotal)}
+                                                ${
+                                                    (isLease)
+                                                    ? eyeExamsRequired(profit.yearlyNetTotal)
+                                                    : eyeExamsRequired(profit.SYSTEM_FIRST_YEAR_TOTAL)
+                                                }
                                             </td>
                                             <td className='pt-10 pb-10'>
-                                                ${eyeExamsRequired(profit.secondYearTotal)}
+                                                ${
+                                                    (isLease)
+                                                    ? eyeExamsRequired(profit.secondYearNetTotal)
+                                                    : eyeExamsRequired(profit.SYSTEM_SECOND_YEAR_TOTAL)
+                                                }
                                             </td>
                                             <td className='pt-10 pb-10'>
-                                                ${eyeExamsRequired(profit.thirdYearTotal)}
+                                                ${
+                                                    (isLease)
+                                                    ? eyeExamsRequired(profit.thirdYearNetTotal)
+                                                    : eyeExamsRequired(profit.SYSTEM_THIRD_YEAR_TOTAL)
+                                                }
                                             </td>
                                             <td className='pt-10 pb-10'>National average for eye exam $105</td>
                                         </tr>
@@ -471,7 +521,7 @@ const ROICalculator = () => {
                             </div>`
     const profitSummary = `<div class='section'>
                             <h2>Profit Summary</h2>
-                            <h3>Total Estimated Profit:</h3>
+                            <h3>Total Estimated:</h3>
                             <table>
                                 <thead className='pt-10 pb-10'>
                                     <tr>
@@ -553,7 +603,7 @@ const ROICalculator = () => {
                                         <td className='pt-10 pb-10'>$53 profit per bottle</td>
                                     </tr>
                                     <tr>
-                                        <td className='pt-10 pb-10'>Dry Eye Compress (microwaveable)</td>
+                                        <td className='pt-10 pb-10'>Dry Eye Compress microwavable</td>
                                         <td className='pt-10 pb-10'>
                                             ${profit.compressWeeklyProfit}
                                         </td>
@@ -612,10 +662,10 @@ const ROICalculator = () => {
                                     <tbody>
                                         <tr>
                                             <td className='pt-10 pb-10'>Payment</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(-MGRX_LEASE_PAYMENT)}</td>
-                                            <td className='pt-10 pb-10'>${yearlyLease}</td>
-                                            <td className='pt-10 pb-10'>${yearlyLease}</td>
-                                            <td className='pt-10 pb-10'>${yearlyLease}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(-profit.MGRX_LEASE_PAYMENT)}</td>
+                                            <td className='pt-10 pb-10'>${profit.yearlyLease}</td>
+                                            <td className='pt-10 pb-10'>${profit.yearlyLease}</td>
+                                            <td className='pt-10 pb-10'>${profit.yearlyLease}</td>
                                             <td className='pt-10 pb-10'></td>
                                         </tr>
                                         <tr>
@@ -628,20 +678,20 @@ const ROICalculator = () => {
                                         </tr>
                                         <tr>
                                             <td className='pt-10 pb-10'>Monthly Credit*</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT)}</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT * 12)}</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT * 12)}</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(MONTHLY_CREDIT * 12)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.MONTHLY_CREDIT)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.MONTHLY_CREDIT * 12)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.MONTHLY_CREDIT * 12)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.MONTHLY_CREDIT * 12)}</td>
                                             <td className='pt-10 pb-10'>
                                                 25% credit for DE Product Purchased the previous month, applied against the next months lease payment.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td className='pt-10 pb-10'>Net Lease Payment</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(ADJUSTED_NET_LEASE_PAYMENT)}</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(ADJUSTED_NET_LEASE_PAYMENT * 12)}</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(ADJUSTED_NET_LEASE_PAYMENT * 12)}</td>
-                                            <td className='pt-10 pb-10'>${formatCurrency(ADJUSTED_NET_LEASE_PAYMENT * 12)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT * 12)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT * 12)}</td>
+                                            <td className='pt-10 pb-10'>${formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT * 12)}</td>
                                             <td className='pt-10 pb-10'></td>
                                         </tr>
                                         <tr>
@@ -654,18 +704,18 @@ const ROICalculator = () => {
                                         </tr>
                                         <tr>
                                             <td className='pt-10 pb-10'>Net Profit</td>
-                                            <td className='pt-10 pb-10'>${monthlyNetProfit}</td>
-                                            <td className='pt-10 pb-10'>${yearlyNetProfit}</td>
-                                            <td className='pt-10 pb-10'>${secondYearNetProfit}</td>
-                                            <td className='pt-10 pb-10'>${thirdYearNetProfit}</td>
+                                            <td className='pt-10 pb-10'>${profit.monthlyNetProfit}</td>
+                                            <td className='pt-10 pb-10'>${profit.yearlyNetProfit}</td>
+                                            <td className='pt-10 pb-10'>${profit.secondYearNetProfit}</td>
+                                            <td className='pt-10 pb-10'>${profit.thirdYearNetProfit}</td>
                                             <td className='pt-10 pb-10'></td>
                                         </tr>
                                         <tr>
                                             <td className='pt-10 pb-10'>Equivalent Number<br/>of Eye Exams:</td>
-                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.monthlyTotal)}</td>
-                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.yearlyTotal)}</td>
-                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.secondYearTotal)}</td>
-                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.thirdYearTotal)}</td>
+                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.monthlyNetTotal)}</td>
+                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.yearlyNetTotal)}</td>
+                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.secondYearNetTotal)}</td>
+                                            <td className='pt-10 pb-10'>${eyeExamsRequired(profit.thirdYearNetTotal)}</td>
                                             <td className='pt-10 pb-10'>National average for eye exam $105</td>
                                         </tr>
                                     </tbody>
@@ -710,7 +760,7 @@ const ROICalculator = () => {
                     <p><strong>Weekly Conversions:</strong></p>
                     <ul>
                         <li>
-                            Patients Purchasing an MGrx Treatment: ${convertedPct} X $${pricePerTreatment}
+                            Patients Purchasing an MGrx Treatment weekly: ${convertedPct} X $${pricePerTreatment}
                         </li>
                         ${ultraPrint}
                         ${compressPrint}
@@ -799,7 +849,7 @@ const ROICalculator = () => {
                             <div>
                                 <div className='flexContainer containerBox pb-15'>
                                     <div className='color-roiGreen contentLeft'>
-                                        MGrx Treatment Profit:
+                                        MGrx Treatment weekly:
                                     </div>
                                     <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                         Assumptions
@@ -874,7 +924,7 @@ const ROICalculator = () => {
                                 <div>
                                     <div className='flexContainer containerBox pb-15'>
                                         <div className='flex2Column color-roiGreen contentLeft'>
-                                            Ultra Dry Eye Profit:
+                                            Ultra Dry Eye:
                                         </div>
                                         <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             Assumptions
@@ -883,7 +933,7 @@ const ROICalculator = () => {
                                     <div>
                                         <div className='flexContainer containerBox'>
                                             <div className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                                Buying Ultra Dry Eye Supplement: <span className='color-roiOrange size25 bold'>{ultraPct}</span> X {`$${Number(pricePerUltra).toLocaleString('en-US')}`}
+                                                Patients buying Ultra Dry Eye Supplement weekly: <span className='color-roiOrange size25 bold'>{ultraPct}</span> X {`$${Number(pricePerUltra).toLocaleString('en-US')}`}
                                             </div>
                                             <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                                 National average is $53/bottle.
@@ -924,7 +974,7 @@ const ROICalculator = () => {
                             <div className='containerDetail brdr-ROIGreen mb-1 mt-10'>
                                 <div className='flexContainer containerBox pb-15'>
                                     <div className='color-roiGreen contentLeft'>
-                                        Dry Eye Compress (microwaveable) Profit:
+                                        Dry Eye Compress microwavable:
                                     </div>
                                     <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                         Assumptions
@@ -933,7 +983,7 @@ const ROICalculator = () => {
                                 <div>
                                     <div className='flexContainer containerBox'>
                                         <div className='flexColumn m-5 color-roiGreen contentLeft size15'>
-                                            Buying Dry Eye Compress (microwaveable): <span className='color-roiOrange size25 bold'>{compressPct}</span> X {`$${Number(pricePerCompress).toLocaleString('en-US')}`}
+                                            Patients buying Dry Eye Compress microwavable weekly: <span className='color-roiOrange size25 bold'>{compressPct}</span> X {`$${Number(pricePerCompress).toLocaleString('en-US')}`}
                                         </div>
                                         <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             National average is $20 per compress.
@@ -973,7 +1023,7 @@ const ROICalculator = () => {
                             <div className='containerDetail brdr-ROIGreen mb-1 mt-10'>
                                 <div className='flexContainer containerBox pb-15'>
                                     <div className='color-roiGreen contentLeft'>
-                                        Duo USB Compress Profit:
+                                        Duo USB Compress:
                                     </div>
                                     <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                         Assumptions
@@ -982,7 +1032,7 @@ const ROICalculator = () => {
                                 <div>
                                     <div className='flexContainer containerBox'>
                                         <div className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                            Buying Duo USB Compress: <span className='color-roiOrange size25 bold'>{duoPct}</span> X {`$${Number(pricePerDuo).toLocaleString('en-US')}`}
+                                            Patients buying Duo USB Compress weekly: <span className='color-roiOrange size25 bold'>{duoPct}</span> X {`$${Number(pricePerDuo).toLocaleString('en-US')}`}
                                         </div>
                                         <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             National average is $50 per Duo Compress.
@@ -1022,7 +1072,7 @@ const ROICalculator = () => {
                             <div className={`containerDetail brdr-ROIGreen mb-1 mt-10 ${containedHeaderBackground()}`}>
                                 <div className='flexContainer containerBox pb-15'>
                                     <div className='color-roiGreen contentLeft'>
-                                        Lid Scrub Profit:
+                                        Lid Scrub:
                                     </div>
                                     <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                         Assumptions
@@ -1031,7 +1081,7 @@ const ROICalculator = () => {
                                 <div>
                                     <div className='containerBox flexContainer'>
                                         <div className='flexColumn m-5 color-roiGreen contentLeft size15' style={{ display: 'block', marginBottom: '0.5rem' }}>
-                                            Buying Lid Scrub: <span className='color-roiOrange size25 bold'>{scrubPct}</span> X {`$${Number(pricePerScrub).toLocaleString('en-US')}`}
+                                            Patients buying Lid Scrub weekly: <span className='color-roiOrange size25 bold'>{scrubPct}</span> X {`$${Number(pricePerScrub).toLocaleString('en-US')}`}
                                         </div>
                                         <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             National average is $10 per Lid Scrub.
@@ -1090,10 +1140,10 @@ const ROICalculator = () => {
                                     </div>
                                     <div className='flexContainer'>
                                         <div className='flex6Column pb-10 pt-10 brdr-dark'>Payment</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(-MGRX_LEASE_PAYMENT)}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyLease}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyLease}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyLease}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(-profit.MGRX_LEASE_PAYMENT)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyLease}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyLease}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyLease}</div>
                                         <div className='flex6Column size12 color-roiOrange pb-10 pt-10 brdr-dark'></div>
                                     </div>
                                     <div className='flexContainer bg-lite'>
@@ -1106,19 +1156,19 @@ const ROICalculator = () => {
                                     </div>
                                     <div className='flexContainer'>
                                         <div className='flex6Column pb-10 pt-10 brdr-dark'>Monthly Credit*</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT)}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT * 12)}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT * 12)}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(MONTHLY_CREDIT * 12)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.MONTHLY_CREDIT)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.MONTHLY_CREDIT * 12)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.MONTHLY_CREDIT * 12)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.MONTHLY_CREDIT * 12)}</div>
                                         <div className='flex6Column size12 color-roiOrange pb-10 pt-10 brdr-dark contentLeft pl-5'>
                                             25% credit for DE Product Purchased the previous month, applied against the next months lease payment.</div>
                                     </div>
                                     <div className='flexContainer bg-lite'>
                                         <div className='flex6Column pb-10 pt-10 brdr-dark'>Net Lease Payment</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(ADJUSTED_NET_LEASE_PAYMENT)}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(ADJUSTED_NET_LEASE_PAYMENT * 12)}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(ADJUSTED_NET_LEASE_PAYMENT * 12)}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(ADJUSTED_NET_LEASE_PAYMENT * 12)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT * 12)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT * 12)}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(profit.ADJUSTED_NET_LEASE_PAYMENT * 12)}</div>
                                         <div className='flex6Column size12 color-roiOrange pb-10 pt-10 brdr-dark'></div>
                                     </div>
                                     <div className='flexContainer'>
@@ -1133,10 +1183,10 @@ const ROICalculator = () => {
                                     </div>
                                     <div className='flexContainer bg-lite'>
                                         <div className='flex6Column pb-10 pt-10 brdr-dark'>Net Profit</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{monthlyNetProfit}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyNetProfit}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{secondYearNetProfit}</div>
-                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{thirdYearNetProfit}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyNetProfit}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyNetProfit}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearNetProfit}</div>
+                                        <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearNetProfit}</div>
                                         <div className='flex6Column size12 color-roiOrange pb-10 pt-10 brdr-dark contentLeft pl-5'>
                                         </div>
                                     </div>
@@ -1145,16 +1195,16 @@ const ROICalculator = () => {
                                             Equivalent Number<br/>of Eye Exams:
                                         </div>
                                         <div className='pt-5 m-1 contentCenter flex6Column'>
-                                            {eyeExamsRequired(profit.monthlyTotal)}
+                                            {eyeExamsRequired(profit.monthlyNetTotal)}
                                         </div>
                                         <div className='pt-5 m-1 contentCenter flex6Column'>
-                                            {eyeExamsRequired(profit.yearlyTotal)}
+                                            {eyeExamsRequired(profit.yearlyNetTotal)}
                                         </div>
                                         <div className='pt-5 m-1 contentCenter flex6Column'>
-                                            {eyeExamsRequired(profit.secondYearTotal)}
+                                            {eyeExamsRequired(profit.secondYearNetTotal)}
                                         </div>
                                         <div className='pt-5 m-1 contentCenter flex6Column'>
-                                            {eyeExamsRequired(profit.thirdYearTotal)}
+                                            {eyeExamsRequired(profit.thirdYearNetTotal)}
                                         </div>
                                         <div className='pt-5 m-1 contentLeft flex6Column'>
                                             National average for eye exam $105
@@ -1238,10 +1288,10 @@ const ROICalculator = () => {
                                         ? <div>
                                             <div className='flexContainer bg-lite'>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>Payment</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(-MGRX_LEASE_PAYMENT)}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyLease}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyLease}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyLease}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{formatCurrency(-profit.MGRX_LEASE_PAYMENT)}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyLease}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyLease}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyLease}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'></div>
                                             </div>
                                             <div className='flexContainer'>
@@ -1254,10 +1304,10 @@ const ROICalculator = () => {
                                             </div>
                                             <div className='flexContainer bg-lite'>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>Net Profit</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{monthlyNetProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{yearlyNetProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{secondYearNetProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{thirdYearNetProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyNetProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyNetProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearNetProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearNetProfit}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'></div>
                                             </div>
                                         </div>
@@ -1267,7 +1317,7 @@ const ROICalculator = () => {
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.SYSTEM_FIRST_YEAR_PROFIT}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.SYSTEM_SECOND_YEAR_PROFIT}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.SYSTEM_THIRD_YEAR_PROFIT}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'></div>
+                                                            <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'>growth of 15% year over year</div>
                                             </div>
                                             <div className='flexContainer'>
                                                 <div className='flex5Column pb-10 pt-10 pl-10 contentLeft text-align-top brdr-dark'>ROI in Months</div>
@@ -1285,19 +1335,37 @@ const ROICalculator = () => {
                                         {
                                             (isLease)
                                             ? <div className='pt-5 m-1 contentCenter flex6Column'>
-                                                {eyeExamsRequired(profit.monthlyTotal)}
+                                                {eyeExamsRequired(profit.monthlyNetTotal)}
                                             </div> 
                                             : null 
                                         }
-                                        <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
-                                            {eyeExamsRequired(profit.yearlyTotal)}
-                                        </div>
-                                                <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
-                                            {eyeExamsRequired(profit.secondYearTotal)}
-                                        </div>
-                                        <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
-                                            {eyeExamsRequired(profit.thirdYearTotal)}
-                                        </div>
+                                        {
+                                            (isLease)
+                                            ? <div className='pt-5 m-1 contentCenter flex6Column'>
+                                                {eyeExamsRequired(profit.yearlyNetTotal)}
+                                            </div>
+                                            : <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
+                                                {eyeExamsRequired(profit.SYSTEM_FIRST_YEAR_TOTAL)}
+                                            </div>
+                                        }
+                                        {
+                                            (isLease)
+                                            ? <div className='pt-5 m-1 contentCenter flex6Column'>
+                                                {eyeExamsRequired(profit.secondYearNetTotal)}
+                                            </div>
+                                            : <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
+                                                {eyeExamsRequired(profit.SYSTEM_SECOND_YEAR_TOTAL)}
+                                            </div>
+                                        }
+                                        {
+                                            (isLease)
+                                            ? <div className='pt-5 m-1 contentCenter flex6Column'>
+                                                {eyeExamsRequired(profit.thirdYearNetTotal)}
+                                            </div>
+                                            : <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
+                                                {eyeExamsRequired(profit.SYSTEM_THIRD_YEAR_TOTAL)}
+                                            </div>
+                                        }
                                         <div className={`pt-5 m-1 contentLeft ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
                                             National average for eye exam $105
                                         </div>
@@ -1313,7 +1381,7 @@ const ROICalculator = () => {
                             <div className={`containerDetail pl-10 pb-20 pt-20 contentLeft color-roiOrange`}>Profit Summary</div>
                             <div className='containerDetail m-1'>
                                 <div className={`pl-5 pt-10 pb-10 color-roiGreen contentLeft ${headerBackground()}`}>
-                                    Total Estimated Profit:
+                                    Total Estimated:
                                 </div>
                                 <div className='containerDetail contentLeft flexContainer bg-lite pt-10 pb-10 pl-10'>
                                     <div className='m-1 contentLeft flex5Column size15 color-white'>
