@@ -436,11 +436,11 @@ const ROICalculator = () => {
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
-                                            ${
-                                                (isLease)
-                                                ? ''
-                                                : 'growth of 15% year over year'
-                                            }
+                                                ${
+                                                    (isLease)
+                                                    ? ''
+                                                    : 'growth of 15% year over year'
+                                                }
                                             </td>
                                         </tr>
                                         <tr>
@@ -479,8 +479,8 @@ const ROICalculator = () => {
                                             </td>
                                             ${
                                                 (!isLease)
-                                                ? ``
-                                                : `<td className='pt-10 pb-10'></td>`
+                                                ? `growth of 15% year over year`
+                                                : `<td className='pt-10 pb-10'>growth of 15% year over year</td>`
                                             }
                                         </tr>
                                         <tr>
@@ -1308,7 +1308,7 @@ const ROICalculator = () => {
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyNetProfit}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearNetProfit}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearNetProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'></div>
+                                                            <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'>growth of 15% year over year</div>
                                             </div>
                                         </div>
                                         : <div>
@@ -1317,7 +1317,7 @@ const ROICalculator = () => {
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.SYSTEM_FIRST_YEAR_PROFIT}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.SYSTEM_SECOND_YEAR_PROFIT}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.SYSTEM_THIRD_YEAR_PROFIT}</div>
-                                                            <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'>growth of 15% year over year</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'>growth of 15% year over year</div>
                                             </div>
                                             <div className='flexContainer'>
                                                 <div className='flex5Column pb-10 pt-10 pl-10 contentLeft text-align-top brdr-dark'>ROI in Months</div>
