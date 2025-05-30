@@ -270,7 +270,7 @@ const ROICalculator = () => {
     const eyeExamsRequired = (total) => Math.ceil(total / EYE_EXAM_REVENUE);
     
     const ultraPrint = (!isROICalculator) ? '' : `<li>Patients buying Ultra Dry Eye Supplement weekly: ${ultraPct} X $${pricePerUltra}</li>`;
-    const compressPrint = (!isROICalculator) ? '' : `<li>Patients buying Dry Eye Compress microwavable weekly: ${compressPct} X $${pricePerCompress}</li>`;
+    const compressPrint = (!isROICalculator) ? '' : `<li>Patients buying Dry Eye Compress (microwavable) weekly: ${compressPct} X $${pricePerCompress}</li>`;
     const duoPrint = (!isROICalculator) ? '' : `<li>Patients buying Duo USB Compress weekly: ${duoPct} X $${pricePerDuo}</li>`;
     const scrubPrint = (!isROICalculator) ? '' : `<li>Patients buying Lid Scrub weekly: ${scrubPct} X $${pricePerScrub}</li>`;
     const sendEmail = (email, clinic, reportContent) => {
@@ -603,7 +603,7 @@ const ROICalculator = () => {
                                         <td className='pt-10 pb-10'>$53 profit per bottle</td>
                                     </tr>
                                     <tr>
-                                        <td className='pt-10 pb-10'>Dry Eye Compress microwavable</td>
+                                        <td className='pt-10 pb-10'>Dry Eye Compress (microwavable)</td>
                                         <td className='pt-10 pb-10'>
                                             ${profit.compressWeeklyProfit}
                                         </td>
@@ -974,7 +974,7 @@ const ROICalculator = () => {
                             <div className='containerDetail brdr-ROIGreen mb-1 mt-10'>
                                 <div className='flexContainer containerBox pb-15'>
                                     <div className='color-roiGreen contentLeft'>
-                                        Dry Eye Compress microwavable:
+                                        Dry Eye Compress (microwavable):
                                     </div>
                                     <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                         Assumptions
@@ -983,7 +983,7 @@ const ROICalculator = () => {
                                 <div>
                                     <div className='flexContainer containerBox'>
                                         <div className='flexColumn m-5 color-roiGreen contentLeft size15'>
-                                            Patients buying Dry Eye Compress microwavable weekly: <span className='color-roiOrange size25 bold'>{compressPct}</span> X {`$${Number(pricePerCompress).toLocaleString('en-US')}`}
+                                            Patients buying Dry Eye Compress (microwavable) weekly: <span className='color-roiOrange size25 bold'>{compressPct}</span> X {`$${Number(pricePerCompress).toLocaleString('en-US')}`}
                                         </div>
                                         <div className='flex2Column columnRightAlign mr-10 color-roiOrange size15 i'>
                                             National average is $20 per compress.
