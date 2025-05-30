@@ -433,27 +433,27 @@ const ROICalculator = () => {
                                             }
                                             ${
                                                 (isLease)
-                                                ? `<td className='pt-10 pb-10'>${profit.monthlyProfit}</td>`
+                                                ? `<td className='pt-10 pb-10'>${profit.monthlyTreatmentProfit}</td>`
                                                 : ''
                                             }
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.yearlyProfit 
+                                                    ? profit.yearlyTreatmentProfit
                                                     : profit.SYSTEM_FIRST_YEAR_PROFIT 
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.secondYearProfit
+                                                    ? profit.secondYearTreatmentProfit
                                                     : profit.SYSTEM_SECOND_YEAR_PROFIT
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.thirdYearProfit
+                                                    ? profit.thirdYearTreatmentProfit
                                                     : profit.SYSTEM_THIRD_YEAR_PROFIT
                                                 }
                                             </td>
@@ -474,28 +474,28 @@ const ROICalculator = () => {
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.monthlyNetProfit 
+                                                    ? profit.monthlyNetTreatment 
                                                     : profit.ROI_MONTHS
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.yearlyNetProfit
+                                                    ? profit.yearlyNetTreatment
                                                     : ''
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.secondYearNetProfit
+                                                    ? profit.secondYearNetTreatment
                                                     : ''
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.thirdYearNetProfit
+                                                    ? profit.thirdYearNetTreatment
                                                     : ''
                                                 }
                                             </td>
