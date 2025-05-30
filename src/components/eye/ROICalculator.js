@@ -121,11 +121,16 @@ const ROICalculator = () => {
         const secondYearNetTotal = secondYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
         const thirdYearNetTotal = thirdYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
 
-        const weeklyNetTreatment = formatCurrency(weeklyTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT / 4));
-        const monthlyNetTreatment = formatCurrency(monthlyTreatmentTotal + ADJUSTED_NET_LEASE_PAYMENT);
-        const yearlyNetTreatment = formatCurrency(yearlyTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
-        const secondYearNetTreatment = formatCurrency(secondYearTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
-        const thirdYearNetTreatment = formatCurrency(thirdYearTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
+        const weeklyNetTreatment = weeklyTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT / 4);
+        const weeklyNetTreatmentProfit = formatCurrency(weeklyNetTreatment);
+        const monthlyNetTreatment = monthlyTreatmentTotal + ADJUSTED_NET_LEASE_PAYMENT;
+        const monthlyNetTreatmentProfit = formatCurrency(monthlyNetTreatment);
+        const yearlyNetTreatment = yearlyTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
+        const yearlyNetTreatmentProfit = formatCurrency(yearlyNetTreatment);
+        const secondYearNetTreatment = secondYearTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
+        const secondYearNetTreatmentProfit = formatCurrency(secondYearNetTreatment);
+        const thirdYearNetTreatment = thirdYearTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
+        const thirdYearNetTreatmentProfit = formatCurrency(thirdYearNetTreatment);
 
         const monthlyNetProfit = formatCurrency(monthlyNetTotal);
         const yearlyNetProfit = formatCurrency(yearlyNetTotal);
@@ -194,6 +199,11 @@ const ROICalculator = () => {
             yearlyNetTreatment,
             secondYearNetTreatment,
             thirdYearNetTreatment,
+            weeklyNetTreatmentProfit,
+            monthlyNetTreatmentProfit,
+            yearlyNetTreatmentProfit,
+            secondYearNetTreatmentProfit,
+            thirdYearNetTreatmentProfit,
             SYSTEM_FIRST_YEAR_TOTAL,
             SYSTEM_SECOND_YEAR_TOTAL,
             SYSTEM_THIRD_YEAR_TOTAL
@@ -474,28 +484,28 @@ const ROICalculator = () => {
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.monthlyNetTreatment 
+                                                    ? profit.monthlyNetTreatmentProfit
                                                     : profit.ROI_MONTHS
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.yearlyNetTreatment
+                                                    ? profit.yearlyNetTreatmentProfit
                                                     : ''
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.secondYearNetTreatment
+                                                    ? profit.secondYearNetTreatmentProfit
                                                     : ''
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease) 
-                                                    ? profit.thirdYearNetTreatment
+                                                    ? profit.thirdYearNetTreatmentProfit
                                                     : ''
                                                 }
                                             </td>
@@ -510,7 +520,7 @@ const ROICalculator = () => {
                                             ${
                                                 (isLease)
                                                 ? `<td className='pt-10 pb-10'>
-                                                    ${eyeExamsRequired(profit.monthlyNetTotal)}
+                                                    ${eyeExamsRequired(profit.monthlyNetTreatment)}
                                                 </td>`
                                                 : ''
                                             }
@@ -518,21 +528,21 @@ const ROICalculator = () => {
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease)
-                                                    ? eyeExamsRequired(profit.yearlyNetTotal)
+                                                    ? eyeExamsRequired(profit.yearlyNetTreatment)
                                                     : eyeExamsRequired(profit.SYSTEM_FIRST_YEAR_TOTAL)
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease)
-                                                    ? eyeExamsRequired(profit.secondYearNetTotal)
+                                                    ? eyeExamsRequired(profit.secondYearNetTreatment)
                                                     : eyeExamsRequired(profit.SYSTEM_SECOND_YEAR_TOTAL)
                                                 }
                                             </td>
                                             <td className='pt-10 pb-10'>
                                                 ${
                                                     (isLease)
-                                                    ? eyeExamsRequired(profit.thirdYearNetTotal)
+                                                    ? eyeExamsRequired(profit.thirdYearNetTreatment)
                                                     : eyeExamsRequired(profit.SYSTEM_THIRD_YEAR_TOTAL)
                                                 }
                                             </td>
@@ -1326,10 +1336,10 @@ const ROICalculator = () => {
                                             </div>
                                             <div className='flexContainer bg-lite'>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>Net Profit</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyNetTreatment}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyNetTreatment}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearNetTreatment}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearNetTreatment}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyNetTreatmentProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyNetTreatmentProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearNetTreatmentProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearNetTreatmentProfit}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'>growth of 15% year over year</div>
                                             </div>
                                         </div>
@@ -1357,14 +1367,14 @@ const ROICalculator = () => {
                                         {
                                             (isLease)
                                             ? <div className='pt-5 m-1 contentCenter flex6Column'>
-                                                {eyeExamsRequired(profit.monthlyNetTotal)}
+                                                {eyeExamsRequired(profit.monthlyNetTreatment)}
                                             </div> 
                                             : null 
                                         }
                                         {
                                             (isLease)
                                             ? <div className='pt-5 m-1 contentCenter flex6Column'>
-                                                {eyeExamsRequired(profit.yearlyNetTotal)}
+                                                {eyeExamsRequired(profit.yearlyNetTreatment)}
                                             </div>
                                             : <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
                                                 {eyeExamsRequired(profit.SYSTEM_FIRST_YEAR_TOTAL)}
@@ -1373,7 +1383,7 @@ const ROICalculator = () => {
                                         {
                                             (isLease)
                                             ? <div className='pt-5 m-1 contentCenter flex6Column'>
-                                                {eyeExamsRequired(profit.secondYearNetTotal)}
+                                                {eyeExamsRequired(profit.secondYearNetTreatment)}
                                             </div>
                                             : <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
                                                 {eyeExamsRequired(profit.SYSTEM_SECOND_YEAR_TOTAL)}
@@ -1382,7 +1392,7 @@ const ROICalculator = () => {
                                         {
                                             (isLease)
                                             ? <div className='pt-5 m-1 contentCenter flex6Column'>
-                                                {eyeExamsRequired(profit.thirdYearNetTotal)}
+                                                {eyeExamsRequired(profit.thirdYearNetTreatment)}
                                             </div>
                                             : <div className={`pt-5 m-1 contentCenter ${(isLease) ? 'flex6Column' : 'flex5Column'}`}>
                                                 {eyeExamsRequired(profit.SYSTEM_THIRD_YEAR_TOTAL)}
