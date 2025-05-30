@@ -54,9 +54,13 @@ const ROICalculator = () => {
         const weeklyTreatmentTotal = convertedPct * pricePerTreatment;
         const monthlyTreatmentTotal = (weeklyTreatmentTotal * WEEKS_PER_YEAR) / 12;
         const yearlyTreatmentTotal = weeklyTreatmentTotal * WEEKS_PER_YEAR;
+        const secondYearTreatmentTotal = (yearlyTreatmentTotal) * 1.15;
+        const thirdYearTreatmentTotal = (secondYearTreatmentTotal) * 1.15;
         const weeklyTreatmentProfit = formatCurrency(weeklyTreatmentTotal);
         const monthlyTreatmentProfit = formatCurrency(monthlyTreatmentTotal);
         const yearlyTreatmentProfit = formatCurrency(yearlyTreatmentTotal);
+        const secondYearTreatmentProfit = formatCurrency(secondYearTreatmentTotal);
+        const thirdYearTreatmentProfit = formatCurrency(thirdYearTreatmentTotal);
 
         const ultraWeeklyTotal = ultraPct * pricePerUltra;
         const ultraWeeklyProfit = formatCurrency(ultraWeeklyTotal);
@@ -117,15 +121,28 @@ const ROICalculator = () => {
         const secondYearNetTotal = secondYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
         const thirdYearNetTotal = thirdYearTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12);
 
+        const weeklyNetTreatment = formatCurrency(weeklyTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT / 4));
+        const monthlyNetTreatment = formatCurrency(monthlyTreatmentTotal + ADJUSTED_NET_LEASE_PAYMENT);
+        const yearlyNetTreatment = formatCurrency(yearlyTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
+        const secondYearNetTreatment = formatCurrency(secondYearTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
+        const thirdYearNetTreatment = formatCurrency(thirdYearTreatmentTotal + (ADJUSTED_NET_LEASE_PAYMENT * 12));
+
         const monthlyNetProfit = formatCurrency(monthlyNetTotal);
         const yearlyNetProfit = formatCurrency(yearlyNetTotal);
         const secondYearNetProfit = formatCurrency(secondYearNetTotal);
         const thirdYearNetProfit = formatCurrency(thirdYearNetTotal);
 
         return {
+            weeklyTreatmentTotal,
+            monthlyTreatmentTotal,
+            yearlyTreatmentTotal,
+            secondYearTreatmentTotal,
+            thirdYearTreatmentTotal,
             weeklyTreatmentProfit,
             monthlyTreatmentProfit,
             yearlyTreatmentProfit,
+            secondYearTreatmentProfit,
+            thirdYearTreatmentProfit,
             ultraWeeklyTotal,
             ultraWeeklyProfit,
             compressWeeklyTotal,
@@ -172,6 +189,11 @@ const ROICalculator = () => {
             yearlyNetTotal,
             secondYearNetTotal,
             thirdYearNetTotal,
+            weeklyNetTreatment,
+            monthlyNetTreatment,
+            yearlyNetTreatment,
+            secondYearNetTreatment,
+            thirdYearNetTreatment,
             SYSTEM_FIRST_YEAR_TOTAL,
             SYSTEM_SECOND_YEAR_TOTAL,
             SYSTEM_THIRD_YEAR_TOTAL
@@ -1296,19 +1318,19 @@ const ROICalculator = () => {
                                             </div>
                                             <div className='flexContainer'>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>Monthly Profit</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyTreatmentProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyTreatmentProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearTreatmentProfit}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearTreatmentProfit}</div>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'></div>
                                             </div>
                                             <div className='flexContainer bg-lite'>
                                                 <div className='flex6Column pb-10 pt-10 brdr-dark'>Net Profit</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyNetProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyNetProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearNetProfit}</div>
-                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearNetProfit}</div>
-                                                            <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'>growth of 15% year over year</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.monthlyNetTreatment}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.yearlyNetTreatment}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.secondYearNetTreatment}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark'>{profit.thirdYearNetTreatment}</div>
+                                                <div className='flex6Column pb-10 pt-10 brdr-dark color-roiOrange size12 contentLeft pl-10'>growth of 15% year over year</div>
                                             </div>
                                         </div>
                                         : <div>
