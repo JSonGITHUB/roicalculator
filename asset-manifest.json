@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/roicalculator/static/css/main.f035ab23.css",
-    "main.js": "/roicalculator/static/js/main.c457c77d.js",
+    "main.js": "/roicalculator/static/js/main.e4d183c8.js",
     "index.html": "/roicalculator/index.html",
     "main.f035ab23.css.map": "/roicalculator/static/css/main.f035ab23.css.map",
-    "main.c457c77d.js.map": "/roicalculator/static/js/main.c457c77d.js.map"
+    "main.e4d183c8.js.map": "/roicalculator/static/js/main.e4d183c8.js.map"
   },
   "entrypoints": [
     "static/css/main.f035ab23.css",
-    "static/js/main.c457c77d.js"
+    "static/js/main.e4d183c8.js"
   ]
 }
